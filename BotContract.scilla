@@ -1,0 +1,36 @@
+scilla_version 0
+
+library Oracle
+
+let one_msg =
+  fun (msg: Message) =>
+  let nil_msg = Nil {Message} in
+  Cons {Message} msg nil_msg
+
+contract Oracle(owner: ByStr20)
+
+field auPrice: Int256 = Int256 0
+
+transition getPrice()
+  auprice <- auPrice;
+  msg = {_tag: "getPriceCallback"; 
+    _recipient: _sender; 
+    _amount: Uint128 0; 
+    price: auprice};
+  msgs = one_msg msg;
+  send msgs
+end
+
+transition setPrice(auPriceToSet: Int256)
+  isOwner = builtin eq _sender owner;
+  match isOwner with
+    | True =>
+      auPrice := auPriceToSet;
+      auprice <- auPrice;
+      e = {_eventname: "SetPriceSuccess"; value: auprice};
+      event e
+    | False =>
+      e = {_eventname: "SetPriceFail"; value: Int32 -1};
+      event e      
+  end
+end
