@@ -7,7 +7,7 @@ const OracleAddress = 'zil17v5gvafwzfsll3ugahuclpw5ghap0ex6889epp';
 const OwnerPrivateKey = 'ca00eaa404dbec3e742f4e60e43e0a99a35fa1989c9d4f03a31d5b2b29d58005';
 const OwnerPublicKey = getPubKeyFromPrivateKey(OwnerPrivateKey);
 const OwnerAddress = getAddressFromPrivateKey(OwnerPrivateKey);
-zilliqa.wallet.addByPrivateKey(OwnerPrivateKey);
+
 const ChainId = 333;
 const MsgVersion = 1;
 
@@ -19,7 +19,7 @@ var rawTx;
 
 const zilliqaApiUrl = 'https://dev-api.zilliqa.com';
 const zilliqa = new Zilliqa(zilliqaApiUrl);
-
+zilliqa.wallet.addByPrivateKey(OwnerPrivateKey);
 const web3ApiUrl = 'https://mainnet.infura.io/v3/fe37a420f1d6441fa8eda71c0cc757f1';
 const web3 = new Web3(web3ApiUrl);
 const AUPriceFeed = new web3.eth.Contract(AUContractAbi,AUContractAddr);
@@ -36,7 +36,7 @@ function fun(){ // worked with zilliqa.blockchain.createTransaction(rawTx)
 				version: bytes.pack(ChainId ,MsgVersion),
 				amount: new BN(units.toQa(0, units.Units.Li)),
 				gasLimit: Long.fromNumber(25000),
-				gasPrice: new BN(units.toQa(1000,units.Units.Li)),
+				gasPrice: new BN(units.toQa(2000,units.Units.Li)),
 				toAddr: OracleAddress,
 				data: JSON.stringify({
 					"_tag": "setPrice",
